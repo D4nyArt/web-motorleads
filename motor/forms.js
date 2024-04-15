@@ -35,25 +35,12 @@ function send_version(){
     location.href=url;
 }
 
-function send_kilometraje(){
-    kilometraje = document.form1.kilometraje.value;
-    api_format = "kilometraje";
-    url = "http://localhost/clasefj2024/motor/forms.php?api_format="+api_format+"&selectedFilter="+kilometraje;
-}
-
-function send_kilometraje(){
-    kilometraje = document.form1.color.value;
-    api_format = "color";
-    url = "http://localhost/clasefj2024/motor/forms.php?api_format="+api_format+"&selectedFilter="+color;
-}
-
-
 function send_rest_values(){
     api_format = "kilometraje,color";
     kilometraje = document.form1.kilometraje.value;
     color = document.form1.color.value;
     datos = kilometraje + "," + color;
 
-    url = "http://localhost/clasefj2024/motor/forms.php?selectedFilter="+datos+"&api_format="+api_format+"&wanted_values="+10;
+    url = "http://localhost/clasefj2024/motor/forms.php?selectedFilter="+datos+"&api_format="+api_format;
     location.href=url;
 }
