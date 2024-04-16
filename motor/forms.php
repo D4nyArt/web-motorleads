@@ -25,11 +25,22 @@
                 filter_select.disabled = true;
             }
 
+            function enable_rest_filters(id_filters){
+                for (var i = 0; i < id_filters.length; i++){
+                    var filter_select1= document.getElementById(id_filters[i]);
+                    filter_select1.disabled = false;
+                }
+            }
+
         </script>
     </head>
 <?php
-    session_start();
-    reload();
+
+    if(!isset($_SESSION)) { 
+        session_start(); 
+    } 
+
+    reload(0);
     
     //___________________________________________________________________________________________________________
     $api_format = $_GET['api_format'] ?? null;
@@ -39,23 +50,14 @@
     if ($selectedFilter==null && $wanted_values == null && $selectedFilter == null) form();
 
     else if ($wanted_values == null) {
-        if(count( $_SESSION['specified_filts'])< 4){
-            echo '<script>alert("Faltan filtros o no se enucentran registros")</script>'; 
-            session_destroy();
-            echo"
-            <script>
-            url = 'http://localhost/clasefj2024/motor/start.php';
-            location.href=url;
-            </script>";
-        }
+        $filts = explode(",", $selectedFilter);
+        $keys = explode(",", $api_format);
         
-        else{
-            $filts = explode(",", $selectedFilter);
-            $keys = explode(",", $api_format);
-            for ($i = 0; $i <(count($filts)); $i++){
-                $_SESSION['specified_filts'][$filts[$i]] = $keys[$i];
-            }
+        for ($i = 0; $i <(count($filts)); $i++){
+            $_SESSION['specified_filts'][$keys[$i]] = $filts[$i];
         }
+
+        include("graph.php");
     }
 
     else{
@@ -64,10 +66,25 @@
 
     //___________________________________________________________________________________________________________
     
-    function reload(){
+    function enable($ids_form_nonapi){
+
+        $ids_form_nonapi = json_encode($ids_form_nonapi);
+        echo "<script type='text/javascript'>enable_rest_filters(".$ids_form_nonapi.");</script>";
+    }
+    
+    function reload($option){
         $is_page_refreshed = (isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] == 'max-age=0');
     
         if($is_page_refreshed) {
+            session_destroy();
+            echo"
+            <script>
+            url = 'http://localhost/clasefj2024/motor/start.php';
+            location.href=url;
+            </script>";
+        } 
+
+        if ($option == 1){
             session_destroy();
             echo"
             <script>
@@ -109,8 +126,10 @@
         }
 
         if($_SESSION['iterate'] + 1 >= count($_SESSION['ids_form'])){
+            $_SESSION['finalUrl'] = $url;
             call_forms();
             update();
+            enable($_SESSION['ids_form_nonapi']); //se terminó de checar filtros que dependen de la api
         }
 
         else{
@@ -131,14 +150,24 @@
                 curl_close($curl);
                 $filter_data = json_decode($response, true);
 
-                foreach ($filter_data as $data) {
-                    $_SESSION[$next_filt][] = $data[$atribute];
-                    $_SESSION['id_'.$next_filt][$data[$atribute]] = $data["id"];
+                if (empty($filter_data)) {
+                    echo "<script type='text/javascript'> alert('No se posee una versión del vehiculo seleccinado. Intente de nuevo');</script>";
+                    reload(1);
                 }
 
-                $_SESSION['iterate'] = $_SESSION['iterate'] + 1;
-                call_forms();
-                update();
+                else{
+                    
+                    foreach ($filter_data as $data) {
+                        //añadir nombre de marca/modelo/anio/version a la lista correspondiente
+                        $_SESSION[$next_filt][] = $data[$atribute]; 
+                        //añadir ids de marca/modelo/anio/version al dict correspondiente
+                        $_SESSION['id_'.$next_filt][$data[$atribute]] = $data["id"]; 
+                    }
+    
+                    $_SESSION['iterate'] = $_SESSION['iterate'] + 1;
+                    call_forms();
+                    update();
+                }
             }
         }
     }
@@ -166,7 +195,7 @@
                 $id = $_SESSION['ids_form'][$i];
                 add_select($_SESSION[$id],$id, $filters[$id]);
             }
-            else if (count($filters) == 4){
+            else if (count($filters) ==  count($_SESSION['ids_form'])){
                 break;
             }
 
@@ -180,3 +209,4 @@
 
 </body>
 </html>
+
