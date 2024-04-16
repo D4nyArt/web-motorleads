@@ -5,6 +5,8 @@ function send_marcas(){
     url = "http://localhost/clasefj2024/motor/forms.php?api_format="+api_format+"&wanted_values="+wanted_values;
     url = url+"&selectedFilter="+marca;
     location.href=url;
+    
+
 }
 
 function send_modelos(){
@@ -28,8 +30,9 @@ function send_anio(){
 
 function send_version(){
     version = document.form1.version.value;
-    api_format = "vehicles,version,pricings";
-    wanted_values= "vehicle_id, vehicle_version,";
+    months = "3";
+    api_format = "vehicles,version,pricings?filter[since]="+months;
+    wanted_values= "sale_price_variation,sale_price_percentage_variation,purchase_price_variation,purchase_price_percentage_variation,medium_price_variation,medium_price_percentage_variation";
     url = "http://localhost/clasefj2024/motor/forms.php?api_format="+api_format+"&wanted_values="+wanted_values;
     url = url+"&selectedFilter="+version;
     location.href=url;
@@ -38,9 +41,22 @@ function send_version(){
 function send_rest_values(){
     api_format = "kilometraje,color";
     kilometraje = document.form1.kilometraje.value;
+    version = document.form1.version.value;
+    anio = document.form1.anio.value;
+    modelo = document.form1.modelo.value;
     color = document.form1.color.value;
-    datos = kilometraje + "," + color;
+    marca = document.form1.marca.value;
+    
+    if(kilometraje =='' || color == ''){
+        alert("Faltan filtros.");
+    }
+    
+    else{
+        datos = kilometraje + "," + color;
+        url = "http://localhost/clasefj2024/motor/forms.php?selectedFilter="+datos+"&api_format="+api_format;
+        location.href=url;
+    }
 
-    url = "http://localhost/clasefj2024/motor/forms.php?selectedFilter="+datos+"&api_format="+api_format;
-    location.href=url;
+
 }
+
