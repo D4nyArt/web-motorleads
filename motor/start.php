@@ -1,5 +1,6 @@
 <?php 
     session_start();
+    $_SESSION['ids_form_nonapi'] = array('kilometraje', 'color');
     $_SESSION['id_marca'] = array();
     $_SESSION['marca'] = array();
     $_SESSION['id_modelo'] = array();
@@ -11,6 +12,10 @@
     $_SESSION['ids_form'] = array('marca', 'modelo', 'anio', 'version');
     $_SESSION['iterate'] = 0;
     $_SESSION['specified_filts'] = array();
+
+    $_SESSION['finalUrl'] = null;
+    $_SESSION['graph_info'] = array(array());
+    $_SESSION['sales_info'] = array();
     start();
 
     function start(){
@@ -44,3 +49,4 @@
     }
 
 ?>
+
