@@ -55,7 +55,7 @@
     //lo que está a continuación es un ejemplo de como seleccionar cada uno de los 
     //datos que se necesitan para la pagina de los resultados
         
-    for ($i = 1; $i < (count($_SESSION ["graph_info"])); $i++){
+    /*for ($i = 1; $i < (count($_SESSION ["graph_info"])); $i++){
         for ($j = 0; $j < (count($GLOBALS ["required_values_graph"])); $j++){
             echo $_SESSION['graph_info']["mes".$i][$GLOBALS["required_values_graph"][$j]];
         }   
@@ -79,6 +79,123 @@
             echo $_SESSION['specified_filts'][$_SESSION['ids_form_nonapi'][$j]];
             $j = $j +1;
         }
-    } 
+    }*/
 
+    function create_general_info_table(){
+        $marca = $_SESSION['specified_filts'][$_SESSION['ids_form'][0]];
+        $modelo = $_SESSION['specified_filts'][$_SESSION['ids_form'][1]];
+        $anio = $_SESSION['specified_filts'][$_SESSION['ids_form'][2]];
+        $longVersion = $_SESSION['specified_filts'][$_SESSION['ids_form'][3]];
+        $arrLongVersion = explode(',', $longVersion);
+        $shortVersion = $arrLongVersion[0];
+        $arrShortVersion = explode('.', $shortVersion);
+        $finalVersion = $arrShortVersion[1];
+        $kilometraje = $_SESSION['specified_filts'][$_SESSION['ids_form_nonapi'][0]];
+        $color = $_SESSION['specified_filts'][$_SESSION['ids_form_nonapi'][1]];
+
+        $compra = $_SESSION['graph_info']["mes1"][$GLOBALS["required_values_graph"][3]];;
+        $venta = $_SESSION['graph_info']["mes1"][$GLOBALS["required_values_graph"][4]];
+        $medio = $_SESSION['graph_info']["mes1"][$GLOBALS["required_values_graph"][5]];
+
+        $cambio_compra = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][0]];
+        $cambio_compra_porc = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][1]];
+        $cambio_venta = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][2]];
+        $cambio_venta_porc = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][3]];
+        $cambio_medio = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][4]];
+        $cambio_medio_porc = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][5]];
+
+        echo "
+        <html>
+        <head>
+            <title>Motor Leads</title>
+            <link href='graph.css' rel='stylesheet' type='text/css'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <link href='assets\copa_logo.png' rel='shortcut icon' type='image/jpg'>
+            <meta charset='utf-8'>
+
+            <style>
+                body {
+                    font-family: sans-serif;
+                }   
+
+                table {
+                    border-spacing: 20px; 
+                }
+
+                tr {
+                    text-align: center;
+                }
+
+            </style>
+        </head>
+
+        <body>
+            <header>
+                <div class='header-image'>
+                    <img src='assets\copa_logo.png' width= '100' height='50'>
+                </div>
+            </header>
+        
+        <center>
+        <div class='container'>
+            <div class='div1'>
+            <table>
+                <tr>
+                    <td>
+                        <img src='assets/{$marca}.png' width='200'>
+                    </td>
+                    <td>
+                        <h1>{$marca} {$modelo}</h1>
+                        <p><b>{$anio} • {$color} • {$finalVersion} • {$kilometraje} km</b></p>
+                    </td>
+                </tr>
+            </table>
+            </div>
+            <div class='div2'>
+            <table>
+                <tr>
+                    <td>
+                        <p>Valor a la <b>Venta</b></p>
+                    </td>
+                    <td>
+                        <p>Valor <b>Medio</b></p>
+                    </td>
+                    <td>
+                        <p>Valor a la <b>Compra</b></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <h1>&dollar;{$compra}</h1>
+                    </td>
+                    <td>
+                        <h1>&dollar;{$medio}</h1>
+                    </td>
+                    <td>
+                        <h1>&dollar;{$venta}</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p><small>Cambio de 3 meses</small></p>
+                        <p><b>{$cambio_compra} ({$cambio_compra_porc})</b></p>
+                    </td>
+                    <td>
+                        <p><small>Cambio de 3 meses</small></p>
+                        <p><b>{$cambio_medio} ({$cambio_medio_porc})</b></p>
+                    </td>
+                    <td>
+                        <p><small>Cambio de 3 meses</small></p>
+                        <p><b>{$cambio_venta} ({$cambio_venta_porc})</b></p>
+                    </td>
+                </tr>
+            </table>
+            </div>
+        </div>
+        </center>
+        </body>
+        </html>";
+    }
+
+    create_general_info_table();
 ?>
