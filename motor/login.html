@@ -1,54 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <title>Motor Leads</title>
-    <link href="login.css" rel="stylesheet" type="text/css">
-    <script src = "login.js" type = "text/JavaScript"> </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MotorLeads Inicio de Sesión</title>
     <link href="assets\copa_logo.png" rel="shortcut icon" type="image/jpg">
-    <meta charset="utf-8">
+    <script src = "login.js" type = "text/JavaScript"> </script>
+    <link href="login.css" rel="stylesheet" type="text/css">
 </head>
 
-<body> 
+<body>
+<main>
+    <div class="box">
+        <div class="forms-wrap">
+            <form name = "formLogin" autocomplete="off">
 
-    <header>
-        <div class="header-image">
-            <img src="assets\copa_logo_black.png"width=120" height="50">
+                <div class="logo">
+                    <img src="assets\copa_logo_black.png" />
+                    </div>
+                    <div class="heading">
+                    <h2 class="color1">Precios reales para</h2>
+                    <h2 class="color2">transacciones</h2>
+                    <h2 class="color3">reales</h2>
+                </div>
+
+                <div>
+                    <div class="input-wrap">
+                        <label for = "email"> Email </label>
+                        <input
+                        type="text"
+                        name = "email"
+                        id = "email"
+                        minlength="4"
+                        class="input-field"
+                        autocomplete="off"
+                        required
+                        onclick="gray_button('email')"
+                        />
+                    </div>
+
+                    <div class="input-wrap">
+                        <label for = "contrasena"> Contraseña </label>
+                        <input
+                        type="password"
+                        name = "contrasena"
+                        id = "contrasena"
+                        minlength="4"
+                        class="input-field"
+                        autocomplete="off"
+                        required
+                        onclick="gray_button('contrasena')"
+                        />
+                    </div>
+
+                    <div class="login__check">
+                        <div class="login__check-group">
+                            <input type="checkbox"  id="login-check">
+                            <p class="text" style="margin-left: 0.2rem;">Recordarme</p>
+                        </div>
+                        <p class="text">
+                            <a href="">Olvidé mi contraseña</a>
+                        </p>
+                    </div>
+        
+                    <input type="button" name="boton" value="Iniciar Sesión" class="sign-btn" onclick="send_login_data()"/>
+
+                    <p class="text">
+                        ¿Aún no tienes cuenta?
+                        <a href="">Regístrate para empezar</a>
+                    </p>
+
+                </div>
+            </form>
         </div>
-    </header>
 
-    <div>
-        <br>
-        <h1>
-            <span class="text1">Precios reales para</span> <br>
-            <span class="text2">transacciones </span><br>
-            <span class="text3">reales</span><br>
-        </h1>
-        <br><br><br>
-
-        <form name = "form1">
-            <label class = "text" for = "email">Email</label>
-            <br>
-            <input class = "text" name = "email" id = "email" type = "text" size = "40" maxlength = "40" required onclick="gray_button('email')">
-            <br>
-            <label class = "text" for = "contrasena">Contraseña</label>
-            <br>
-            <input class = "text" name = "contrasena" id = "contrasena" type="password" size = "40" maxlength="40" required onclick="gray_button('contrasena')"> 
-            <br>
-            <input class = "checkmark" type = "checkbox" name = "recordar" id = "recordar" value="0">
-            <label class =" textinput" for = "recordar" style="position: absolute; margin-left:14%; margin-top: 0.7%;">Recordarme</label>
-            <button class="button1"  style = "position: absolute; margin-top: 0.7%; margin-left:24.5%;" disabled>Olvidé mi contraseña</button>
-    
-            <input name ="boton" type = "button"  class ="buttons" value = "Iniciar sesión" style ="position: absolute; margin-top: 3%; margin-left:12%;" onclick="send_login_data()"> 
-            
-            <p class = "textinput" style="position: absolute; margin-left:12%; margin-top: 7%;">¿Aún no tienes cuenta? </p>
-            <button class = "button1" style="position: absolute; margin-left:21.2%; margin-top: 7%;" disabled> Regístrate para empezar </button>
-        </div>
-    
-        <div class="image">
-    
+        <div class="carousel">
+            <img src="assets\vividblurred.jpg" class="image img-1 show"/>
         </div>
 
-        </form>
-
-    
-</body>
+    </div>
+</main>
 

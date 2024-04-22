@@ -129,7 +129,7 @@
             </style>
         </head>
 
-        <body>
+        <body class = 'background'>
             <header>
                 <div class='header-image'>
                     <img src='assets\copa_logo.png' width= '100' height='50'>

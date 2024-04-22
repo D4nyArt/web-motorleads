@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <script src = "forms.js" type = "text/JavaScript"> </script>
+
         <script type = "text/JavaScript"> 
             function change_option(filter, id, default_op){
                 for (var i = 0; i < filter.length; i++) {
@@ -33,7 +30,7 @@
             }
 
         </script>
-    </head>
+
 <?php
 
     if(!isset($_SESSION)) { 
@@ -79,7 +76,7 @@
             session_destroy();
             echo"
             <script>
-            url = 'http://localhost/clasefj2024/motor/start.php';
+            url = 'http://localhost/motor/start.php';
             location.href=url;
             </script>";
         } 
@@ -88,7 +85,7 @@
             session_destroy();
             echo"
             <script>
-            url = 'http://localhost/clasefj2024/motor/start.php';
+            url = 'http://localhost/motor/start.php';
             location.href=url;
             </script>";
         } 
@@ -151,7 +148,7 @@
                 $filter_data = json_decode($response, true);
 
                 if (empty($filter_data)) {
-                    echo "<script type='text/javascript'> alert('No se posee una versión del vehiculo seleccinado. Intente de nuevo');</script>";
+                    echo "<script type='text/javascript'> alert('Error: no se posee una versión del vehículo seleccionado.');</script>";
                     reload(1);
                 }
 
