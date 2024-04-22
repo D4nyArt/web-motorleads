@@ -4,7 +4,7 @@ function send_login_data(){
     regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     valid = regexEmail.test(email);
 
-    if (valid) {
+    if (valid && contrasena.length >= 4) {
         url = "http://localhost/motor/login.php?email="+email+"&contrasena="+contrasena;
         location.href=url;
     } 
