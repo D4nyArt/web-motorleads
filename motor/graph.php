@@ -81,6 +81,21 @@
         }
     }*/
 
+    function send_graph_info(){
+    $graphData = array(); // Initialize an empty array
+
+    for ($i = 1; $i < count($_SESSION["graph_info"]); $i++) {
+        $rowData = array();  // Create an array for each row of data
+        for ($j = 0; $j < count($GLOBALS["required_values_graph"]); $j++) {
+            $rowData[$GLOBALS["required_values_graph"][$j]] = $_SESSION['graph_info']["mes" . $i][$GLOBALS["required_values_graph"][$j]];
+        }
+        $graphData[] = $rowData;  // Add the row of data to the main array
+    }
+
+    $jsonData = json_encode($graphData); // Encode the array as JSON
+    header('X-GraphData: ' . $jsonData);
+    }
+
     function create_general_info_table(){
         $marca = $_SESSION['specified_filts'][$_SESSION['ids_form'][0]];
         $modelo = $_SESSION['specified_filts'][$_SESSION['ids_form'][1]];
@@ -197,5 +212,102 @@
         </html>";
     }
 
+    function show_info_graph(){
+        echo "
+        <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+        <canvas id='myChart' width='800' height='300'></canvas>
+        <script>
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', document.location.href);  // Get current URL
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const graphDataJS = JSON.parse(xhr.getResponseHeader('X-GraphData'));
+    
+                    const firstDictionary = graphDataJS[0];
+                    const secondDictionary = graphDataJS[1];
+                    const thirdDictionary = graphDataJS[2];
+    
+                    const firstMonth = firstDictionary['month_name']
+                    const secondMonth = secondDictionary['month_name']
+                    const thirdMonth = thirdDictionary['month_name']
+    
+                    const firstMonthPurchase = parseInt(firstDictionary['purchase_price'])
+                    const secondMonthPurchase = parseInt(secondDictionary['purchase_price'])
+                    const thirdMonthPurchase = parseInt(thirdDictionary['purchase_price'])
+    
+                    const firstMonthSale = parseInt(firstDictionary['sale_price'])
+                    const secondMonthSale = parseInt(secondDictionary['sale_price'])
+                    const thirdMonthSale = parseInt(thirdDictionary['sale_price'])
+    
+                    const firstMonthMedium = parseInt(firstDictionary['medium_price'])
+                    const secondMonthMedium = parseInt(secondDictionary['medium_price'])
+                    const thirdMonthMedium = parseInt(thirdDictionary['medium_price'])
+    
+                    const data = {
+                        labels: [firstMonth, secondMonth, thirdMonth],
+                        datasets: [
+                          {
+                            label: 'Venta',
+                            data: [firstMonthPurchase, secondMonthPurchase, thirdMonthPurchase],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 5
+                          },
+                          {
+                            label: 'Compra',
+                            data: [firstMonthSale, secondMonthSale, thirdMonthSale],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 5
+                          },
+                          {
+                            label: 'Medio',
+                            data: [firstMonthMedium, secondMonthMedium, thirdMonthMedium],
+                            backgroundColor: 'rgba(255, 205, 86, 0.2)',
+                            borderColor: 'rgba(255, 205, 86, 1)',
+                            borderWidth: 5
+                          }
+                        ]
+                      };
+    
+                    const ctx = document.getElementById('myChart').getContext('2d');
+                      const myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: data,
+                        options: {
+                          responsive: false, // Desactivar la responsividad para usar dimensiones fijas
+                          maintainAspectRatio: false, // No mantener una relación de aspecto específica
+                          plugins: {
+                            legend: {
+                              position: 'top',
+                            },
+                            title: {
+                              display: true,
+                              text: 'Gráfico de líneas Chart.js'
+                            }
+                          },
+                          layout: {
+                            padding: {
+                              left: 10,
+                              right: 10,
+                              top: 10,
+                              bottom: 10
+                            }
+                          },
+                          scales: {
+                            y: {
+                              beginAtZero: true
+                            }
+                          }
+                        }
+                      });
+                }
+            };
+            xhr.send();
+        </script>";
+    }
+    
+    send_graph_info();
     create_general_info_table();
+    show_info_graph(); 
 ?>
