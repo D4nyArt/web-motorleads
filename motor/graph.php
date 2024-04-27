@@ -147,7 +147,7 @@
         <body class = 'background'>
             <header>
                 <div class='header-image'>
-                    <img src='assets\copa_logo.png' width= '100' height='50'>
+                    <a href='forms.html'><img src='assets\copa_logo.png' width= '100' height='50'></a>
                 </div>
             </header>
         
@@ -208,6 +208,9 @@
             </div>
         </div>
         </center>
+        <div class='bottom-right-button'>
+            <button onclick='window.location.href='forms.html''>Regresar</button>
+        </div>
         </body>
         </html>";
     }
