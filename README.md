@@ -1,4 +1,4 @@
-# Motor Leads
+# MotorLeads
 
 ## Tabla de contenidos
 1. [Información general](#información-general)
@@ -32,6 +32,7 @@ Porfavor, instala los requisitos de software antes mencionados estos links te pu
 
 1. [Page 1: Instalar Visual Studio Code](https://code.visualstudio.com/download)
 2. [Page 2: Instala todos los paquetes necesarios](https://code.visualstudio.com/docs/languages/overview)
+3. Falta la librería para la gráfica.
    
 
 ### Instalación
@@ -42,7 +43,7 @@ Porfavor, instala los requisitos de software antes mencionados estos links te pu
     git clone https://github.com/D4nyArt/web-motorleads.git
     ```
 
-2. Abre el archivo `index.html` en tu navegador para acceder a la página web de Motor Leads.
+2. Abre el archivo `no me acuerdo.html` en tu navegador para acceder a la página web de MotorLeads.
 
 3. Si deseas utilizar funcionalidades que requieran un servidor, asegúrate de configurar un servidor local (por ejemplo, utilizando XAMPP).
 
@@ -58,28 +59,11 @@ Si deseas contribuir a este proyecto, por favor sigue los siguientes pasos:
 
 ## FAQs
 ***
-1. **What is adeeptpicarpro?**
-*adeeptpicarpro is a Python package designed to assist in controlling the functionalities of the Adeept Picar Pro robot.*
+Si quieres saber más acerca de Motor Leads porfavor ingresa a su página oficial
 
-2. **What functionalities does adeeptpicarpro offer?**
-*Adeeptpicarpro facilitates control over various aspects of the Adeept Picar Pro robot, including:*
-* *Robot movement.*
-* *Servo motor control.*
-* *Screen information display.*
-* *Led control.*
-* *Line tracker.*
-* *Acceleration sensing.*
-*Additional functionalities may be added over time to enhance the capabilities of Adeeptpicarpro.*
+ [Page 1: Página oficial de MotorLeads](https://www.motorleads.co/es)
 
-3. **Where can I find more information about the Adeept Picar Pro robot and Adeept library?**
-*For comprehensive information regarding the Adeept Picar Pro robot and the Adeept library, it is recommended to visit the official Adeept website. Additionally, users can consult the documentation provided with the robot or explore online resources such as forums and community discussions for further insights and support. Below are pertinent links for reference:*
-
-- [Official Adeept Website](https://www.adeept.com/)
-- [Adeept Picar Pro Documentation and Downloads](https://www.adeept.com/learn/detail-50.html)
-- [Adeept Picar Pro GitHub Repository](https://github.com/adeept/adeept_picarpro/)
-- [Official Raspberry Pi Website](https://www.raspberrypi.org/downloads/)
-
-*These sources offer extensive documentation, including setup procedures, operational guidelines, and troubleshooting assistance, ensuring a thorough understanding of the Adeept Picar Pro ecosystem.*
+ Aquí no se que poner bien
 
 ### Licencia
 ***
