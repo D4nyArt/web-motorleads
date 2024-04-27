@@ -209,7 +209,7 @@
         </div>
         </center>
         <div class='bottom-right-button'>
-            <button onclick='window.location.href='forms.html''>Regresar</button>
+            <button onclick=\"window.location.href='forms.html'\">Regresar</button>
         </div>
         </body>
         </html>";
