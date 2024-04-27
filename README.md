@@ -25,14 +25,17 @@ Este repositorio contiene el código fuente para la página web Motor Leads, una
 - **HTML/CSS**: Para la estructura y el diseño de la página web.
 - **JavaScript**: Para la interactividad del cliente, incluyendo la búsqueda de coches y la visualización de gráficas.
 - **API de Coches**: Se utiliza una API externa para obtener información sobre los coches.
-- **Librería de Gráficas**: Se utiliza una librería de gráficas (por determinar) para visualizar datos de forma efectiva.
+- **Librería de Gráficas**: Se utiliza la librería `chart.js` para visualizar datos de forma efectiva.
 - **PHP**: Se puede utilizar PHP para manejar la lógica del servidor, como la autenticación de usuarios y el acceso a la base de datos de usuarios.
  
 Porfavor, instala los requisitos de software antes mencionados estos links te pueden servir
 
 1. [Page 1: Instalar Visual Studio Code](https://code.visualstudio.com/download)
 2. [Page 2: Instala todos los paquetes necesarios](https://code.visualstudio.com/docs/languages/overview)
-3. Falta la librería para la gráfica.
+3. Se puso la librería con el siguiente script:
+   ```bash
+    <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+    ```
    
 
 ### Instalación
@@ -43,7 +46,7 @@ Porfavor, instala los requisitos de software antes mencionados estos links te pu
     git clone https://github.com/D4nyArt/web-motorleads.git
     ```
 
-2. Abre el archivo `no me acuerdo.html` en tu navegador para acceder a la página web de MotorLeads.
+2. Abre el archivo `login.html` en tu navegador para acceder a la página web de MotorLeads.
 
 3. Si deseas utilizar funcionalidades que requieran un servidor, asegúrate de configurar un servidor local (por ejemplo, utilizando XAMPP).
 
