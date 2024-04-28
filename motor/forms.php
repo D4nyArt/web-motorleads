@@ -187,7 +187,7 @@
             //las variables de sesión necesarias. Se mandan con el correo y la contraseña de la sesión anterior.
             echo"
             <script>
-            url = 'http://localhost/motor/login.php?email=".$email."&contrasena=".$contrasena."'; 
+            url = 'http://localhost/MotorLeads/login.php?email=".$email."&contrasena=".$contrasena."'; 
             location.href=url;
             </script>";
         } 
