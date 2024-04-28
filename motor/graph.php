@@ -1,7 +1,6 @@
 <?php
 
     //Inicio de sesion en la pagina, necesario para el funcionamiento de la pagina.
-
     session_start();
 
     if ($_SESSION['specified_filts'] == []){
@@ -19,14 +18,14 @@
     $required_months = $_GET['required_months'] ?? null;
     $month_change = 0;
 
-    //Se modifica el ultimo valor del url el cual corresponde al numero de meses que se desean seleccionar
+    //se modifica el ultimo valor del url el cual corresponde al numero de meses que se desean seleccionar
     if($required_months != null){
-        $url= substr($_SESSION['finalUrl'], 0, -1) . $required_months; //Cuando se desee trabajar con otro filtro 
+        $url= substr($_SESSION['finalUrl'], 0, -1) . $required_months; //cuando se desee trabajar con otro filtro 
         $month_change = $required_months;
     }
 
     else{
-        $url = $_SESSION['finalUrl']; //La url predeterminada trabaja con un filtro de 3 meses
+        $url = $_SESSION['finalUrl']; //la url predeterminada trabaja con un filtro de 3 meses
         $month_change = 3;
     }
     
@@ -35,7 +34,6 @@
 
     //Se manda llamar a la funcion get_graph_info()
     get_graph_info($url);
-
 
     /*
     La funcion get_graph_info() es la encargada de conectarse con la API y obtener los valores necesarios
@@ -109,7 +107,6 @@
         }
     }*/
 
-
     /*
     La funcion send_graph_info() crea un arrreglo en donde se almacena la informacion que se mandara 
     a las funciones que crearan las graficas y muestran la la informacion, los datos se almacenan
@@ -118,8 +115,6 @@
     */
     function send_graph_info(){
     $graphData = array(); // Initialize an empty array
-
-
 
     for ($i = 1; $i < count($_SESSION["graph_info"]); $i++) {
         $rowData = array();  // Create an array for each row of data
@@ -133,7 +128,6 @@
     header('X-GraphData: ' . $jsonData);
     }
 
-
     /*
     La funcion create_general_info_table($month_change) se enncarga de recuperar los datos de 
     $_SESSION['specified_filts'], $_SESSION['graph_info'] y ['sales_info'] dentrro de estos arreglos
@@ -144,7 +138,6 @@
         compra, venta y medio
 
         cambio_compra, cambio_compra_porc, cambio_venta, cambio_venta_porc, cambio_medio ,cambio_medio_porc
-
     */
     function create_general_info_table($month_change){
         $marca = $_SESSION['specified_filts'][$_SESSION['ids_form'][0]];
@@ -170,7 +163,7 @@
         $cambio_medio_porc = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][5]];
 
 
-        //Creacion del html para presentar los valores recuperados
+         //Creacion del html para presentar los valores recuperados
         echo "
         <html>
         <head>
@@ -179,7 +172,6 @@
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
             <link href='assets\copa_logo.png' rel='shortcut icon' type='image/jpg'>
             <meta charset='utf-8'>
-            <link href='graph.css' rel='stylesheet' type='text/css'>
 
             <style>
                 body {
@@ -200,8 +192,14 @@
         <body class = 'background'>
             <header>
                 <div class='header-image'>
-                    <a href='login.php'><img src='assets\copa_logo.png' width= '100' height='50'></a>
+                    <a href='http://localhost/MotorLeads/login.php?email=".$_SESSION['email']."&contrasena=". $_SESSION['contrasena']."'><img src='assets\copa_logo.png' width= '100' height='50'></a>
                 </div>
+
+                <div class = 'user-info'>
+                    <img src='assets\user.png' id='usericon' width='25' height='25'> 
+                    <h1 class = 'username' style = 'color: white;' id='username' >".$_SESSION['username']."</h1>  
+                </div>
+
             </header>
         
         <center>
@@ -223,13 +221,13 @@
             <table>
                 <tr>
                     <td>
-                        <p>Valor a la <b>Venta</b></p>
+                        <p style ='display: inline-block;'>Valor a la <b>Venta</b> <div class='green-circle'></div> </p>
                     </td>
                     <td>
-                        <p>Valor <b>Medio</b></p>
+                        <p style ='display: inline-block;'>Valor <b>Medio</b> <div class='orange-circle'></div> </p>
                     </td>
                     <td>
-                        <p>Valor a la <b>Compra</b></p>
+                        <p style ='display: inline-block;'>Valor a la <b>Compra</b> <div class='blue-circle'></div> </p>
                     </td>
                 </tr>
                 <tr>
@@ -347,29 +345,32 @@
                 const data = {
                     labels: [...mont_name_list],
                     datasets: [
-                      {
+                        {
                         label: 'Venta',
                         data: [...purchase_price_list],
-                        backgroundColor: 'rgb(63 191 74)',
-                        borderColor: 'rgb(125, 224, 26)',
-                        borderWidth: 2
-                      },
-                      {
-                        label: 'Compra',
-                        data: [...sale_price_list],
-                        backgroundColor: 'rgb(51 109 233)',
-                        borderColor: 'rgb(17 64 166)',
-                        borderWidth: 2
-                      },
-                      {
+                        backgroundColor: 'rgba(75, 189, 123, 0.1)',
+                        borderColor: 'rgb(75, 189, 123)',
+                        borderWidth: 2,
+                        fill: 'start'
+                        },
+                        {
                         label: 'Medio',
                         data: [...medium_price_list],
-                        backgroundColor: 'rgb(244 159 0)',
-                        borderColor: 'rgb(234 142 4)',
-                        borderWidth: 2
-                      }
+                        backgroundColor: 'rgb(230, 144, 79, 0.1)',
+                        borderColor: 'rgb(230 144 79)',
+                        borderWidth: 2,
+                        fill: 'start'
+                        },
+                        {
+                        label: 'Compra',
+                        data: [...sale_price_list],
+                        backgroundColor: 'rgba(4, 96, 204, 0.1)',
+                        borderColor: 'rgb(4 96 204)',
+                        borderWidth: 2,
+                        fill: 'start'
+                        }
                     ]
-                  };
+                    };
             
                 const ctx = document.getElementById('myChart').getContext('2d');
                 minimum = Math.min(purchase_price_list)-100000;
@@ -403,25 +404,24 @@
                         }
                       }
                     }
-                  });
+                });
             }
         };
         xhr.send();
         </script>";
     }
 
-    
     //Llamada a las funciones principales
     send_graph_info();
     create_general_info_table($month_change);
     show_info_graph($month_change); 
-    
+
     //Creación del boton que te redirige a la pagina para cotizar un nuevo auto
     echo "
     <center>
     
     <div class='bottom-left-button'>
-        <input name ='boton' type = 'button'  class ='buttons' value = '+Cotizar nuevo auto' onclick= \"window.location.href='login.php'\"> 
+        <input name ='boton' type = 'button'  class ='buttons' value = '+ Cotizar nuevo auto' onclick= \"window.location.href='http://localhost/MotorLeads/login.php?email=".$_SESSION['email']."&contrasena=". $_SESSION['contrasena']."'\"> 
     </div>
     </center>
     ";
