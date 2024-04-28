@@ -1,34 +1,49 @@
 <?php
 
+    //Inicio de sesion en la pagina, necesario para el funcionamiento de la pagina.
+
     session_start();
 
     if ($_SESSION['specified_filts'] == []){
         header('Location:forms.php');
     } 
 
-    //a este php solo es necesario pasarle el numero de meses deseados
+    /*
+    A este php solo es necesario pasarle el numero de meses deseados, se guardan todos los valores (estructura)
+    necesarios para la construcción de la grafica y los valores que se muestran en la pagina
+    en variables globales para permitir el acceso en cualquiermomento de la ejecucioón del programa.
+    */
     
     $GLOBALS["required_values_graph"] = array("year","month","month_name","purchase_price","sale_price","medium_price");
     $GLOBALS["required_values_sales"] = array("sale_price_variation","sale_price_percentage_variation","purchase_price_variation","purchase_price_percentage_variation","medium_price_variation","medium_price_percentage_variation","km_minimum","km_maximum","km_average");
     $required_months = $_GET['required_months'] ?? null;
     $month_change = 0;
 
-    //se modifica el ultimo valor del url el cual corresponde al numero de meses que se desean seleccionar
+    //Se modifica el ultimo valor del url el cual corresponde al numero de meses que se desean seleccionar
     if($required_months != null){
-        $url= substr($_SESSION['finalUrl'], 0, -1) . $required_months; //cuando se desee trabajar con otro filtro 
+        $url= substr($_SESSION['finalUrl'], 0, -1) . $required_months; //Cuando se desee trabajar con otro filtro 
         $month_change = $required_months;
     }
 
     else{
-        $url = $_SESSION['finalUrl']; //la url predeterminada trabaja con un filtro de 3 meses
+        $url = $_SESSION['finalUrl']; //La url predeterminada trabaja con un filtro de 3 meses
         $month_change = 3;
     }
     
     //echo $url; Verificar la url
 
 
+    //Se manda llamar a la funcion get_graph_info()
     get_graph_info($url);
 
+
+    /*
+    La funcion get_graph_info() es la encargada de conectarse con la API y obtener los valores necesarios
+    para la construccion de la pagina mostrada en graph.php, la funcion recible la url actual que contiene todos
+    los filtros seleccionados en el apartado de forms el resultado de la consulta a la API guarda los valores 
+    utiles para la graficación en las variables $_SESSION['graph_info'] y $_SESSION['sales_info']
+
+    */
     function get_graph_info($url){
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -94,6 +109,13 @@
         }
     }*/
 
+
+    /*
+    La funcion send_graph_info() crea un arrreglo en donde se almacena la informacion que se mandara 
+    a las funciones que crearan las graficas y muestran la la informacion, los datos se almacenan
+    en un header con la información codificada para poder ser recuperada por las demas funciones con
+    nombre de 'X-GraphData'
+    */
     function send_graph_info(){
     $graphData = array(); // Initialize an empty array
 
@@ -111,6 +133,19 @@
     header('X-GraphData: ' . $jsonData);
     }
 
+
+    /*
+    La funcion create_general_info_table($month_change) se enncarga de recuperar los datos de 
+    $_SESSION['specified_filts'], $_SESSION['graph_info'] y ['sales_info'] dentrro de estos arreglos
+    se enuentra toda la información necesaria para el despliegue de los datos del auto consultado. 
+    Las variables que se recuperan son :
+        marca, modelo, anio, longVersion, arrLongVersion, shortVersion, finalVersion, kilometraje y color
+
+        compra, venta y medio
+
+        cambio_compra, cambio_compra_porc, cambio_venta, cambio_venta_porc, cambio_medio ,cambio_medio_porc
+
+    */
     function create_general_info_table($month_change){
         $marca = $_SESSION['specified_filts'][$_SESSION['ids_form'][0]];
         $modelo = $_SESSION['specified_filts'][$_SESSION['ids_form'][1]];
@@ -135,7 +170,7 @@
         $cambio_medio_porc = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][5]];
 
 
-        //Crear archivo de estilo y reemplazar por forms.css
+        //Creacion del html para presentar los valores recuperados
         echo "
         <html>
         <head>
@@ -230,6 +265,11 @@
         </html>";
     }
 
+    /*
+    Función encargada de tomar la informacion construida y almacenada en el header 'X-GraphData'.
+    La funcion da como resultado una grafica dinamica en base a arreglos creados del header, la grafica
+    muestra todos los valores (Venta, Compra, Medio) en el rango de meses selecionado en base al menu select.
+    */
     function show_info_graph($month_change){
         echo "
         <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
@@ -371,9 +411,12 @@
     }
 
     
+    //Llamada a las funciones principales
     send_graph_info();
     create_general_info_table($month_change);
     show_info_graph($month_change); 
+    
+    //Creación del boton que te redirige a la pagina para cotizar un nuevo auto
     echo "
     <center>
     
