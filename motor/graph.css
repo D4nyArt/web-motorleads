@@ -3,6 +3,7 @@
     background: linear-gradient(rgb(22, 147, 236), rgb(4, 77, 171));
     color: white;
     font-weight: bold;
+    width: 25%;
 }
 
 .buttons:hover{
@@ -26,7 +27,18 @@ input {
 }
 
 
+.user-info {
+    margin-left: 60%; 
+    display: flex; 
+    align-items: center;
+}
 
+.username {
+    font-family: "arial";
+    font-size: 1em;
+    font-weight: normal;
+    margin-left: 25%; 
+}
 
 /* select {
     margin-bottom: 10px;
@@ -67,8 +79,37 @@ header{
     display: inline-block;
     padding-right: 10%;
     padding-left: 5%;
+    position: relative;
+    bottom: 20px;
 }
 
 .div2 {
     display: inline-block;
+}
+
+.green-circle {
+    height: 10px;
+    width: 10px;
+    margin-left: 10px; 
+    display: inline-block; 
+    background-color: rgb(75, 189, 123);
+    border-radius: 50%;
+}
+
+.blue-circle {
+    height: 10px;
+    width: 10px;
+    margin-left: 10px; 
+    display: inline-block; 
+    background-color: rgb(4 96 204);
+    border-radius: 50%;
+}
+
+.orange-circle {
+    height: 10px;
+    width: 10px;
+    margin-left: 10px; 
+    display: inline-block; 
+    background-color: rgb(230 144 79);
+    border-radius: 50%;
 }
