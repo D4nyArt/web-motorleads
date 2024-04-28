@@ -302,7 +302,7 @@ Insert gif or link to demo
 ## Authors
 
 - [Alyson Melissa Sánchez Serratos](https://github.com/Alyxxxxxxx)
-- [Miguel Ángel Pérez Ávila](https://www.github.com/)
+- [Miguel Ángel Pérez Ávila](https://github.com/TGMAPA)
 - [Daniel Arteaga Mercado](https://github.com/D4nyArt)
 - [Valentino Villegas Martínez](https://github.com/valentino-vm)
 - [Ángel Rogelio Cruz Ibarra](https://www.github.com/)
