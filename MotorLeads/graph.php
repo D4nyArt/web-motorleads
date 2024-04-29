@@ -126,7 +126,11 @@
 
     $jsonData = json_encode($graphData); // Encode the array as JSON
     header('X-GraphData: ' . $jsonData);
+    
     }
+
+    
+    
 
     /*
     La funcion create_general_info_table($month_change) se enncarga de recuperar los datos de 
@@ -411,10 +415,125 @@
         </script>";
     }
 
+    
+    function show_km_graph($km_min, $km_avg, $km_max,$km_client){
+        echo "
+        <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+        <center>
+        <canvas id='kmChart' width='800' height='300'></canvas>
+        </center>
+        <script>
+        const xhv = new XMLHttpRequest();
+        xhv.open('GET', document.location.href);  // Get current URL
+    
+        xhv.onload = function() {
+            if (xhv.status === 200) {
+                const graphDataJS = JSON.parse(xhv.getResponseHeader('X-GraphData'));
+                console.log('Datos recibidos:', graphDataJS); // Verificar los datos recibidos
+                    
+                const data = {
+                    labels: ['Km Mínimo', 'Km Promedio', 'Km Máximo', 'Km Cliente'],
+                    datasets: [
+                        {
+                            label: 'Kilometraje',
+                            data: [$km_min,$km_avg,$km_max,$km_client],
+                            backgroundColor: ['rgba(75, 189, 123, 0.1)', 'rgba(4, 96, 204, 0.1)', 'rgba(230, 144, 79, 0.1)','rgba(220,20,60,0.1)'],
+                            borderColor: ['rgb(75, 189, 123)', 'rgb(4 96 204)', 'rgb(230 144 79)','rgb(220,20,60)'],
+                            borderWidth: 2,
+                            fill: 'start'
+                        }
+                    ]
+                };
+    
+                const ctx = document.getElementById('kmChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar', 
+                    data: data,
+                    options: {
+                        indexAxis: 'y', // Orientación de las barras
+                        responsive: false, // Desactivar la responsividad para usar dimensiones fijas
+                        maintainAspectRatio: false, // No mantener una relación de aspecto específica
+                        plugins: {
+                            legend: {
+                                display: false // Ocultar leyenda
+                            },
+                            title: {
+                                display: true,
+                                text: 'Gráfico de Kilometraje'
+                            }
+                        },
+                        layout: {
+                            padding: {
+                                left: 10,
+                                right: 10,
+                                top: 10,
+                                bottom: 10
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    display : false // Ocultar etiquetas del eje X
+                                },
+                                grid: {
+                                    display: true // Ocultar líneas de la grilla
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                suggestedMin: 0
+                                
+                                
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        xhv.send();
+        </script>";
+    }
+    
+
     //Llamada a las funciones principales
     send_graph_info();
     create_general_info_table($month_change);
-    show_info_graph($month_change); 
+    show_info_graph($month_change);
+    
+
+    //echo para mostrar Kilometrajes, abajo de esto debe de ir la grafica de kilometrajes
+    echo "
+    <center>
+    <table>
+        <tr>
+            <td colspan='3'>
+                <h1>Kilometraje</h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p style ='display: inline-block;'> <b>Mínimo</b></p>
+                <h1><b>{$_SESSION['sales_info']['km_minimum']}</b></h1>
+            </td>
+            <td>
+                <p style ='display: inline-block;'> <b>Promedio</b></p>
+                <p><h1>{$_SESSION['sales_info']['km_average']}</b></h1>
+            </td>
+            <td>
+                <p style ='display: inline-block;'> <b>Máximo</b></p>
+                <p><h1>{$_SESSION['sales_info']['km_maximum']}</b></h1>
+            </td>
+        </tr>
+    </table>
+    </center>";
+
+    // se llama a la función de gráfica de kilómetros
+    $km_minimum = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][6]];
+    $km_maximum = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][7]];
+    $km_avarage = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][8]];
+    $km_client = $_SESSION['specified_filts'][$_SESSION['ids_form_nonapi'][0]];
+
+    show_km_graph($km_minimum, $km_avarage, $km_maximum,$km_client);
 
     //Creación del boton que te redirige a la pagina para cotizar un nuevo auto
     echo "
