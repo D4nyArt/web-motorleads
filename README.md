@@ -332,7 +332,8 @@ Additionally, you'll see a bullet chart representing the car's mileage informati
 - The dark green range represents the expected average to maximum mileage of the selected car.
 - A red line separates these two ranges for clarity.
 
-![Captura](https://github.com/D4nyArt/web-motorleads/assets/115831908/875149d4-7584-46d0-8c42-b33c7676d6ee)
+![Captura de pantalla 2024-04-30 131458](https://github.com/D4nyArt/web-motorleads/assets/131170839/0f3b8c6d-b9e5-4b80-992f-2fac59a99008)
+
 
 
 ## Authors
