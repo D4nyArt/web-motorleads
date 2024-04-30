@@ -67,7 +67,7 @@ git clone https://github.com/D4nyArt/web-motorleads.git
 
       <img src="https://github.com/D4nyArt/web-motorleads/assets/115831908/918ed481-da36-4a11-b7b1-e81cd5da8ec6" width="600" height="400">
 
-4. Place the cloned repository folder into the htdocs directory. **It is imperative to name the folder "MotorLeads".**
+4. Place the folder named "MotorLeads" located in the cloned repository folder into the htdocs directory. **It is imperative to name the folder "MotorLeads".**
 <img src="https://github.com/D4nyArt/web-motorleads/assets/115831908/d2f26c29-1f94-4387-9356-18e204a4745f" width="600" height="400">
 
 ### Executing Program
