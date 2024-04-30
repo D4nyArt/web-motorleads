@@ -44,6 +44,7 @@ MotorLeads-PricingWeb is a versatile web-based tool designed to provide accurate
 - **Motorleads API:** Integration with the Motorleads API is required to fetch automobile pricing data.
 
 - **Chart.js:** The Chart.js library is used for visualizing data and creating dynamic charts. For further information on how to use this library, please refer to [Chart.js Guide](https://www.w3schools.com/ai/ai_chartjs.asp).
+- **Plotly.js:** Plotly.js is added for additional charting capabilities. It offers interactive, web-based visualizations. Check out the [Plotly.js Documentation](https://plotly.com/javascript/getting-started/) for usage instructions and examples.
 
 ### Installing
 
@@ -246,7 +247,7 @@ git clone https://github.com/D4nyArt/web-motorleads.git
 | `vehicle_id`      | `string` | **Required**. . Id of the vehicle version to fetch data for.           |
 | `filter[since]`   | `number` | **Required**. . Specifies the number of months for filtering the data. |
 
-- **API Response Example for March | 2024 | 5 Pts. HB, Sense, L4, 1.6 lt. 106 HP, TM 5, a/ac., mp3, R-14"**
+- **API Response Example for Nissan | March | 2024 | 5 Pts. HB, Sense, L4, 1.6 lt. 106 HP, TM 5, a/ac., mp3, R-14"**
 
 ```json
 {
