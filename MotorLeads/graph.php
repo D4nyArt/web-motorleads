@@ -303,6 +303,14 @@
                             </div>
                         </tr>
 
+                        <script>
+                            id_button = 'button'+'".$month_change."';
+                            var month_button= document.getElementById(id_button);
+                            month_button.style.background = '#cee9ff';
+                            month_button.style.border = '1px solid #58aef5';
+                            month_button.disabled = true;
+                        </script>
+
                         <tr>
                             <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
                             <script src = 'graph.js' type = 'text/JavaScript'> </script>
@@ -314,7 +322,7 @@
                             xhr.onload = function() {
                                 if (xhr.status === 200) {
                                     const graphDataJS = JSON.parse(xhr.getResponseHeader('X-GraphData'));
-                                    console.log(graphDataJS);
+                                
                                     let dictionary_list = [];
                                     
                                     let mont_name_list = [];

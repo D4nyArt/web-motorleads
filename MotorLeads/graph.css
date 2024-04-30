@@ -130,10 +130,10 @@ header{
 }
 
 .buttonMonths:hover {
-background-color: #cee9ff;
-border: 1px solid #58aef5;;
-color: #000000;
-font-weight: bold;
+    background-color: #cee9ff;
+    border: 1px solid #58aef5;
+    color: #000000;
+    font-weight: bold;
 }
 
 canvas{
