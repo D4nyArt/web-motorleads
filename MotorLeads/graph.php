@@ -271,15 +271,15 @@
                 <tr>
                     <td>
                         <p><small>Cambio de {$month_change} meses</small></p>
-                        <p><b>{$cambio_compra} ({$cambio_compra_porc})</b></p>
+                        <p><b>&dollar;{$cambio_compra} ({$cambio_compra_porc}%)</b></p>
                     </td>
                     <td>
                         <p><small>Cambio de {$month_change} meses</small></p>
-                        <p><b>{$cambio_medio} ({$cambio_medio_porc})</b></p>
+                        <p><b>&dollar;{$cambio_medio} ({$cambio_medio_porc}%)</b></p>
                     </td>
                     <td>
                         <p><small>Cambio de {$month_change} meses</small></p>
-                        <p><b>{$cambio_venta} ({$cambio_venta_porc})</b></p>
+                        <p><b>&dollar;{$cambio_venta} ({$cambio_venta_porc}%)</b></p>
                     </td>
                 </tr>
             </table>
