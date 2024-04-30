@@ -76,6 +76,7 @@ input {
     background: linear-gradient(rgb(22, 147, 236), rgb(4, 77, 171));
     color: white;
     font-weight: bold;
+    border: #58aef5;
 }
 
 .buttons:hover{

@@ -1,9 +1,18 @@
 .buttons{
-    margin-top: 25px;
     background: linear-gradient(rgb(22, 147, 236), rgb(4, 77, 171));
     color: white;
     font-weight: bold;
-    width: 25%;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: #58aef5;
+}
+
+.bottom-left-button{
+    width: 100%;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
 }
 
 .buttons:hover{
@@ -22,10 +31,15 @@ input {
 }
 
 #menu-container {
-    margin-left: 600;
-    margin-right: 0;
+    margin-left: 65%;
+    display: flex;
+    justify-content: space-between;
 }
 
+
+.custom-width {
+    width: 200px;
+}
 
 .user-info {
     margin-left: 60%; 
@@ -39,19 +53,6 @@ input {
     font-weight: normal;
     margin-left: 25%; 
 }
-
-/* select {
-    margin-bottom: 10px;
-    border-color: rgb(206, 206, 206);
-    margin-top: 5px;
-    width: 5%; 
-    height: 6%;
-    font-family: "arial";
-    outline: 0;
-    background: linear-gradient(white, rgb(206, 206, 206));
-
-} */
-/* ---------------------------------------------------- */
 
 .background {
     margin-top: 0; 
@@ -73,12 +74,13 @@ header{
 
 .container {
     display: auto;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .div1 {
     display: inline-block;
-    padding-right: 10%;
-    padding-left: 5%;
+    padding-right: 20%;
     position: relative;
     bottom: 20px;
 }
@@ -113,3 +115,35 @@ header{
     background-color: rgb(230 144 79);
     border-radius: 50%;
 }
+
+.buttonMonths {
+    background-color: #ffffff;
+    width: 55px;
+    height: 40px;
+    border-radius: 15px;
+    border: 1px solid #bfbfbf;
+    box-sizing: border-box;
+    color: #000000;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.buttonMonths:hover {
+background-color: #cee9ff;
+border: 1px solid #58aef5;;
+color: #000000;
+font-weight: bold;
+}
+
+canvas{
+    margin-left: 10px;
+    flex-grow: 1;
+}
+
+.line {
+    width: 100%;
+    margin-top: 2%;
+    border-top: 1px solid #b8b8b8;
+}
+

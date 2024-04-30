@@ -6,7 +6,6 @@ function send_marcas(){
     url = url+"&selectedFilter="+marca;
     location.href=url;
     
-
 }
 
 function send_modelos(){

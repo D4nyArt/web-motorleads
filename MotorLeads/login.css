@@ -141,6 +141,7 @@ font-size: 0.8rem;
 margin-bottom: 2rem;
 transition: 0.3s;
 font-weight: bold;
+border: #58aef5;
 }
 
 .sign-btn:hover {
@@ -160,6 +161,8 @@ transition: 0.3s;
 
 .text a:hover {
 color:  rgb(65, 154, 255);
+color:  #ff414194;
+
 }
 
 .carousel {

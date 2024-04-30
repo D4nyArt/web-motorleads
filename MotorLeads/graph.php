@@ -7,6 +7,7 @@
         header('Location:forms.php');
     } 
 
+
     /*
     A este php solo es necesario pasarle el numero de meses deseados, se guardan todos los valores (estructura)
     necesarios para la construcción de la grafica y los valores que se muestran en la pagina
@@ -126,22 +127,20 @@
 
     $jsonData = json_encode($graphData); // Encode the array as JSON
     header('X-GraphData: ' . $jsonData);
-    
     }
 
-    
-    
-
     /*
-    La funcion create_general_info_table($month_change) se enncarga de recuperar los datos de 
-    $_SESSION['specified_filts'], $_SESSION['graph_info'] y ['sales_info'] dentrro de estos arreglos
-    se enuentra toda la información necesaria para el despliegue de los datos del auto consultado. 
+    La funcion create_general_info_table($month_change) se encarga de recuperar los datos de 
+    $_SESSION['specified_filts'], $_SESSION['graph_info'] y ['sales_info'] dentro de estos arreglos
+    se encuentra toda la información necesaria para el despliegue de los datos del auto consultado. 
     Las variables que se recuperan son :
         marca, modelo, anio, longVersion, arrLongVersion, shortVersion, finalVersion, kilometraje y color
 
         compra, venta y medio
 
         cambio_compra, cambio_compra_porc, cambio_venta, cambio_venta_porc, cambio_medio ,cambio_medio_porc
+
+        valor_km, km_max, km_min, graph_max, graph_min, graph_mean
     */
     function create_general_info_table($month_change){
         $marca = $_SESSION['specified_filts'][$_SESSION['ids_form'][0]];
@@ -166,8 +165,32 @@
         $cambio_medio = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][4]];
         $cambio_medio_porc = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][5]];
 
+        $valor_km= $_SESSION['specified_filts'][$_SESSION['ids_form_nonapi'][0]];
+        $km_max= $_SESSION['sales_info']['km_maximum'];
+        $km_min= $_SESSION['sales_info']['km_minimum'];
+        $graph_max= $km_max;
+        $graph_min= $km_min;
+        $graph_mean= $_SESSION['sales_info']['km_average'];
 
-         //Creacion del html para presentar los valores recuperados
+        if($valor_km <= $km_min){
+            $graph_min= $valor_km-($valor_km * .8);
+        }
+        if($valor_km >= $km_max){
+            $graph_max= $valor_km+($valor_km * .05);
+        }
+
+
+        /*
+        Creacion del html para presentar los valores recuperados 
+        Se efectuan dentro de este HTML todos los encabezados, carga de imágenes,
+        y de los datos para su visualización en pantalla
+        
+        Posteriormente se realiza toda la búsqueda de diccionarios para la
+        construcción de las gráficas, tanto de los precios como del kilometraje
+
+        Todo se construye dentro de dos contenedores con varias tablas que se
+        encargan de organizar y construir todos los datos de manera gráfica
+        */
         echo "
         <html>
         <head>
@@ -183,7 +206,7 @@
                 }   
 
                 table {
-                    border-spacing: 20px; 
+                    border-spacing: 10px; 
                 }
 
                 tr {
@@ -216,7 +239,7 @@
                     </td>
                     <td>
                         <h1>{$marca} {$modelo}</h1>
-                        <p><b>{$anio} • {$color} • {$finalVersion} • {$kilometraje} km</b></p>
+                        <p><b>{$anio}  •  {$color}  •  {$finalVersion}  •  {$kilometraje} km</b></p>
                     </td>
                 </tr>
             </table>
@@ -260,288 +283,245 @@
                     </td>
                 </tr>
             </table>
-            </div>
+        </div>
+        </div>
+        <div class='container'>
+            <table>
+                <tr>
+                    <td colspan='3'>
+                        <div class='line'></div>
+                    </td>
+                </tr>
+                <td>
+                    <table>
+                        <tr>
+                            <div id='menu-container'>
+                                <input class = 'buttonMonths' type = 'button' id = 'button3' value = '3M' onclick = 'handlePeriodoChange(3)'>
+                                <input class = 'buttonMonths' type = 'button' id = 'button6' value = '6M' onclick = 'handlePeriodoChange(6)'>
+                                <input class = 'buttonMonths' type = 'button' id = 'button12' value = '1A' onclick = 'handlePeriodoChange(12)'>
+                                <input class = 'buttonMonths' type = 'button' id = 'button24' value = '2A' onclick = 'handlePeriodoChange(24)'>
+                            </div>
+                        </tr>
+
+                        <tr>
+                            <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+                            <script src = 'graph.js' type = 'text/JavaScript'> </script>
+                            <canvas id='myChart' width='750' height='400'></canvas>
+
+                            <script>
+                            const xhr = new XMLHttpRequest();
+                            xhr.open('GET', document.location.href);  // Get current URL
+                            xhr.onload = function() {
+                                if (xhr.status === 200) {
+                                    const graphDataJS = JSON.parse(xhr.getResponseHeader('X-GraphData'));
+                                    console.log(graphDataJS);
+                                    let dictionary_list = [];
+                                    
+                                    let mont_name_list = [];
+                                    
+                                    let purchase_price_list = [];
+                                    
+                                    let sale_price_list = [];
+                                    
+                                    let medium_price_list = [];
+                                    
+                                    let required_months = '$month_change';
+                                    if(required_months == ''){
+                                        required_months = 3;
+                                    }
+                                    let count = 0;
+                                    for (const dictionary of graphDataJS) {
+                                        if (count < parseInt(required_months)) {
+                                            dictionary_list.push(dictionary);
+                                            count++;
+                                        } else {
+                                            break; // Salir del bucle una vez que se han tomado suficientes diccionarios
+                                        }
+                                    }
+
+                                    for (const dic of dictionary_list) {
+                                        mont_name_list.push(dic['month_name']);
+                                    }
+                                    
+                                    for (const dic of graphDataJS) {
+                                        purchase_price_list.push(dic['purchase_price']);
+                                    }
+                                    
+                                    for (const dic of graphDataJS) {
+                                        sale_price_list.push(dic['sale_price']);
+                                    }
+                                    
+                                    for (const dic of graphDataJS) {
+                                        medium_price_list.push(dic['medium_price']);
+                                    }
+
+                                    dictionary_list.reverse();
+                                    
+                                    mont_name_list.reverse();
+                                    
+                                    purchase_price_list.reverse();
+                                    
+                                    sale_price_list.reverse();
+                                    
+                                    medium_price_list.reverse();
+
+                                        
+                                    const data = {
+                                        labels: [...mont_name_list],
+                                        datasets: [
+                                            {
+                                            label: 'Venta',
+                                            data: [...purchase_price_list],
+                                            backgroundColor: 'rgba(75, 189, 123, 0.1)',
+                                            borderColor: 'rgb(75, 189, 123)',
+                                            borderWidth: 2,
+                                            fill: 'start'
+                                            },
+                                            {
+                                            label: 'Medio',
+                                            data: [...medium_price_list],
+                                            backgroundColor: 'rgb(230, 144, 79, 0.1)',
+                                            borderColor: 'rgb(230 144 79)',
+                                            borderWidth: 2,
+                                            fill: 'start'
+                                            },
+                                            {
+                                            label: 'Compra',
+                                            data: [...sale_price_list],
+                                            backgroundColor: 'rgba(4, 96, 204, 0.1)',
+                                            borderColor: 'rgb(4 96 204)',
+                                            borderWidth: 2,
+                                            fill: 'start'
+                                            }
+                                        ]
+                                        };
+                                
+                                    const ctx = document.getElementById('myChart').getContext('2d');
+                                    minimum = Math.min(purchase_price_list)-100000;
+                                    const myChart = new Chart(ctx, {
+                                    type: 'line',
+                                    data: data,
+                                    options: {
+                                        responsive: false, // Desactivar la responsividad para usar dimensiones fijas
+                                        maintainAspectRatio: false, // No mantener una relación de aspecto específica
+                                        plugins: {
+                                        legend: {
+                                            position: 'top',
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: 'Gráfico de Venta, Medio y Compra'
+                                        }
+                                        },
+                                        layout: {
+                                        padding: {
+                                            left: 10,
+                                            right: 10,
+                                            top: 10,
+                                            bottom: 10
+                                        }
+                                        },
+                                        scales: {
+                                            y: {
+                                            beginAtZero: false,
+                                            suggestedMin: minimum,
+                                            position: 'right' 
+                                        }
+                                        }
+                                        }
+                                    });
+                                }
+                            };
+                            xhr.send();
+                            </script>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                            <td style = 'padding-right: 0px;'>
+                                <p style ='display: inline-block;'> <small> <b>Kilometraje Esperado </b></small> </p>
+                                <p>{$_SESSION['sales_info']['km_minimum']} km - {$_SESSION['sales_info']['km_maximum']} km</p>
+                            </td>
+                            <td style = 'padding-left: 0px;'>
+                                <p style ='display: inline-block;'><small> <b> Kilometraje Promedio </b> </small> </p>
+                                <p>{$_SESSION['sales_info']['km_average']} km</p>
+                            </td>
+                                <tr>
+                                    <td colspan = '2'>
+                                        <div id='myDiv'>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan = '2'>
+                                        <div class='bottom-left-button'>
+                                            <input name ='boton' type = 'button'  class ='buttons' value = '+ Cotizar nuevo auto' onclick= \"window.location.href='http://localhost/MotorLeads/login.php?email=".$_SESSION['email']."&contrasena=". $_SESSION['contrasena']."'\"> 
+                                        </div>
+                                    </td>
+                                </tr>
+                        <tr>
+                            <div style='text-align: right'>
+                                <table>
+                                    <td></td>
+                                    <td class='custom-width'>
+                                        <script src='https://cdn.plot.ly/plotly-2.31.1.min.js'></script>
+                                        <script>
+                                            var data = [
+                                                {
+                                                type: 'indicator',
+                                                mode: 'gauge',
+                                                value: ". $valor_km.",
+                                                domain: { x: [0, 1], y: [0, 1] },
+                                                title: { text: '<b>Km</b>' },
+                                                gauge: {
+                                                bar: { color: '#0da8eb' },
+                                                shape: 'bullet',
+                                                axis: { range: [".$graph_min.",".$graph_max."] },
+                                                threshold: {
+                                                    line: { color: '#ff414194', width: 5 },
+                                                    thickness: 1,
+                                                    value:".$graph_mean."
+                                                },
+                                                steps: [
+                                                    { range: [".$km_min.", ".$graph_mean."], color: '#4bbd7a54'},
+                                                    { range: [".$graph_mean.", ".$km_max."], color: '#0a5e2d9c'}
+                                                ]
+                                                }
+                                            }
+                                            ];
+                                        
+                                            var layout = { width: 550, height: 260, title: {
+                                                text: '<b>Kilometraje proporcionado con respecto al esperado</b>',
+                                                font: {
+                                                    family: 'Arial',
+                                                    size: 14,
+                                                    color: 'black'
+                                                },
+                                                x: '0.5',
+                                                y: '0.8',
+                                                automargin: true,
+                                                }};
+                                            var config = { responsive: true };
+                                        
+                                            Plotly.newPlot('myDiv', data, layout, config);
+                                        </script>
+                                    </td>
+                                </table>
+                            </div>
+                        </tr>
+                    </table>
+                </td>
+            </table>
         </div>
         </center>
         </body>
         </html>";
     }
 
-    /*
-    Función encargada de tomar la informacion construida y almacenada en el header 'X-GraphData'.
-    La funcion da como resultado una grafica dinamica en base a arreglos creados del header, la grafica
-    muestra todos los valores (Venta, Compra, Medio) en el rango de meses selecionado en base al menu select.
-    */
-    function show_info_graph($month_change){
-        echo "
-        <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
-        <script src = 'graph.js' type = 'text/JavaScript'> </script>
-        
-        <div id='menu-container'>
-            <select name='periodo' id='periodo' onchange='handlePeriodoChange()'>
-                <option value='' selected disabled>Selecciona una opción</option>
-                <option value='3'>3 meses</option>
-                <option value='6'>6 meses</option>
-                <option value='12'>1 año</option>
-                <option value='12'>Máximo</option>
-            </select>
-        </div>
-        <canvas id='myChart' width='800' height='300'></canvas>
-        
-        <script>
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', document.location.href);  // Get current URL
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const graphDataJS = JSON.parse(xhr.getResponseHeader('X-GraphData'));
-                console.log(graphDataJS);
-                let dictionary_list = [];
-            
-                let mont_name_list = [];
-            
-                let purchase_price_list = [];
-            
-                let sale_price_list = [];
-            
-                let medium_price_list = [];
-            
-                let required_months = '$month_change';
-                if(required_months == ''){
-                    required_months = 3;
-                }
-                let count = 0;
-                for (const dictionary of graphDataJS) {
-                    if (count < parseInt(required_months)) {
-                        dictionary_list.push(dictionary);
-                        count++;
-                    } else {
-                        break; // Salir del bucle una vez que se han tomado suficientes diccionarios
-                    }
-                }
-
-                for (const dic of dictionary_list) {
-                    mont_name_list.push(dic['month_name']);
-                }
-            
-                for (const dic of graphDataJS) {
-                    purchase_price_list.push(dic['purchase_price']);
-                }
-            
-                for (const dic of graphDataJS) {
-                    sale_price_list.push(dic['sale_price']);
-                }
-            
-                for (const dic of graphDataJS) {
-                    medium_price_list.push(dic['medium_price']);
-                }
-
-                dictionary_list.reverse();
-            
-                mont_name_list.reverse();
-            
-                purchase_price_list.reverse();
-            
-                sale_price_list.reverse();
-            
-                medium_price_list.reverse();
-
-                
-                const data = {
-                    labels: [...mont_name_list],
-                    datasets: [
-                        {
-                        label: 'Venta',
-                        data: [...purchase_price_list],
-                        backgroundColor: 'rgba(75, 189, 123, 0.1)',
-                        borderColor: 'rgb(75, 189, 123)',
-                        borderWidth: 2,
-                        fill: 'start'
-                        },
-                        {
-                        label: 'Medio',
-                        data: [...medium_price_list],
-                        backgroundColor: 'rgb(230, 144, 79, 0.1)',
-                        borderColor: 'rgb(230 144 79)',
-                        borderWidth: 2,
-                        fill: 'start'
-                        },
-                        {
-                        label: 'Compra',
-                        data: [...sale_price_list],
-                        backgroundColor: 'rgba(4, 96, 204, 0.1)',
-                        borderColor: 'rgb(4 96 204)',
-                        borderWidth: 2,
-                        fill: 'start'
-                        }
-                    ]
-                    };
-            
-                const ctx = document.getElementById('myChart').getContext('2d');
-                minimum = Math.min(purchase_price_list)-100000;
-                  const myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: data,
-                    options: {
-                      responsive: false, // Desactivar la responsividad para usar dimensiones fijas
-                      maintainAspectRatio: false, // No mantener una relación de aspecto específica
-                      plugins: {
-                        legend: {
-                          position: 'top',
-                        },
-                        title: {
-                          display: true,
-                          text: 'Gráfico de Venta, Medio y Compra'
-                        }
-                      },
-                      layout: {
-                        padding: {
-                          left: 10,
-                          right: 10,
-                          top: 10,
-                          bottom: 10
-                        }
-                      },
-                      scales: {
-                        y: {
-                          beginAtZero: false,
-                          suggestedMin: minimum
-                        }
-                      }
-                    }
-                });
-            }
-        };
-        xhr.send();
-        </script>";
-    }
-
-    
-    function show_km_graph($km_min, $km_avg, $km_max,$km_client){
-        echo "
-        <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
-        <center>
-        <canvas id='kmChart' width='800' height='300'></canvas>
-        </center>
-        <script>
-        const xhv = new XMLHttpRequest();
-        xhv.open('GET', document.location.href);  // Get current URL
-    
-        xhv.onload = function() {
-            if (xhv.status === 200) {
-                const graphDataJS = JSON.parse(xhv.getResponseHeader('X-GraphData'));
-                console.log('Datos recibidos:', graphDataJS); // Verificar los datos recibidos
-                    
-                const data = {
-                    labels: ['Km Mínimo', 'Km Promedio', 'Km Máximo', 'Km Cliente'],
-                    datasets: [
-                        {
-                            label: 'Kilometraje',
-                            data: [$km_min,$km_avg,$km_max,$km_client],
-                            backgroundColor: ['rgba(75, 189, 123, 0.1)', 'rgba(4, 96, 204, 0.1)', 'rgba(230, 144, 79, 0.1)','rgba(220,20,60,0.1)'],
-                            borderColor: ['rgb(75, 189, 123)', 'rgb(4 96 204)', 'rgb(230 144 79)','rgb(220,20,60)'],
-                            borderWidth: 2,
-                            fill: 'start'
-                        }
-                    ]
-                };
-    
-                const ctx = document.getElementById('kmChart').getContext('2d');
-                const myChart = new Chart(ctx, {
-                    type: 'bar', 
-                    data: data,
-                    options: {
-                        indexAxis: 'y', // Orientación de las barras
-                        responsive: false, // Desactivar la responsividad para usar dimensiones fijas
-                        maintainAspectRatio: false, // No mantener una relación de aspecto específica
-                        plugins: {
-                            legend: {
-                                display: false // Ocultar leyenda
-                            },
-                            title: {
-                                display: true,
-                                text: 'Gráfico de Kilometraje'
-                            }
-                        },
-                        layout: {
-                            padding: {
-                                left: 10,
-                                right: 10,
-                                top: 10,
-                                bottom: 10
-                            }
-                        },
-                        scales: {
-                            x: {
-                                ticks: {
-                                    display : false // Ocultar etiquetas del eje X
-                                },
-                                grid: {
-                                    display: true // Ocultar líneas de la grilla
-                                }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                suggestedMin: 0
-                                
-                                
-                            }
-                        }
-                    }
-                });
-            }
-        };
-        xhv.send();
-        </script>";
-    }
-    
 
     //Llamada a las funciones principales
     send_graph_info();
     create_general_info_table($month_change);
-    show_info_graph($month_change);
-    
 
-    //echo para mostrar Kilometrajes, abajo de esto debe de ir la grafica de kilometrajes
-    echo "
-    <center>
-    <table>
-        <tr>
-            <td colspan='3'>
-                <h1>Kilometraje</h1>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style ='display: inline-block;'> <b>Mínimo</b></p>
-                <h1><b>{$_SESSION['sales_info']['km_minimum']}</b></h1>
-            </td>
-            <td>
-                <p style ='display: inline-block;'> <b>Promedio</b></p>
-                <p><h1>{$_SESSION['sales_info']['km_average']}</b></h1>
-            </td>
-            <td>
-                <p style ='display: inline-block;'> <b>Máximo</b></p>
-                <p><h1>{$_SESSION['sales_info']['km_maximum']}</b></h1>
-            </td>
-        </tr>
-    </table>
-    </center>";
-
-    // se llama a la función de gráfica de kilómetros
-    $km_minimum = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][6]];
-    $km_maximum = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][7]];
-    $km_avarage = $_SESSION['sales_info'][$GLOBALS["required_values_sales"][8]];
-    $km_client = $_SESSION['specified_filts'][$_SESSION['ids_form_nonapi'][0]];
-
-    show_km_graph($km_minimum, $km_avarage, $km_maximum,$km_client);
-
-    //Creación del boton que te redirige a la pagina para cotizar un nuevo auto
-    echo "
-    <center>
-    
-    <div class='bottom-left-button'>
-        <input name ='boton' type = 'button'  class ='buttons' value = '+ Cotizar nuevo auto' onclick= \"window.location.href='http://localhost/MotorLeads/login.php?email=".$_SESSION['email']."&contrasena=". $_SESSION['contrasena']."'\"> 
-    </div>
-    </center>
-    ";
 ?>

@@ -9,7 +9,6 @@
             new_option.text= filter[i];
             filter_select.add(new_option);
         }
-        
     }
 1
     function defaultv(id, default_op){
