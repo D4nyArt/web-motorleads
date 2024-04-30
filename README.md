@@ -296,9 +296,42 @@ git clone https://github.com/D4nyArt/web-motorleads.git
 
 ## Demo
 
-Insert gif or link to demo
+### Sign in
 
+Before getting started, sign in with your credentials on our platform. Please note that full credential verification functionality is not yet available. Currently, only basic validation is in place, ensuring that the email matches the regex pattern and the password is at least four characters long.
 
+![login_demo](https://github.com/D4nyArt/web-motorleads/assets/115831908/05db5506-e2c1-462d-a066-2e3345970a70)
+
+### Filter Selection
+Once logged in, you'll be directed to the filter selection page. Here you can filter cars by the following criteria:
+
+- Brand: Select the brand of the car you're interested in.
+- Model: Choose the specific model of the car.
+- Year Version: Select the year version of the car.
+- Mileage: Define the mileage range of the car.
+- Color: Pick the desired color of the car.
+
+![form1_demo](https://github.com/D4nyArt/web-motorleads/assets/115831908/b9cbcb77-5bc1-43ed-8ea9-b315049bd5e2)
+
+![form2_demo](https://github.com/D4nyArt/web-motorleads/assets/115831908/b145e808-06b6-4e72-925f-d8efb77ab7e1)
+
+### Quotation Information
+Once you've selected your filters, click the "Search" button to view the quotation information of the selected car. Detailed information will be displayed, including the following data:
+
+- Purchase Value: Estimated purchase price of the car.
+- Average Value: Estimated average price of the car.
+- Selling Value: Estimated selling price of the car.
+- Price Variations: A graph displaying the variations of purchase, average, and selling prices over the last 3 months. You also have the option to change the view to see more months if desired.
+
+Additionally, you'll see a bullet chart representing the car's mileage information:
+
+**Bullet Chart:**
+- The blue area represents the mileage inputted by the user.
+- The light green range represents the expected minimum to average mileage of the selected car.
+- The dark green range represents the expected average to maximum mileage of the selected car.
+- A red line separates these two ranges for clarity.
+
+![Captura](https://github.com/D4nyArt/web-motorleads/assets/115831908/fa461057-6df4-4afc-b7a0-d027b267d441)
 ## Authors
 
 - [Alyson Melissa Sánchez Serratos](https://github.com/Alyxxxxxxx)
